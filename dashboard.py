@@ -9,6 +9,9 @@ import warnings
 
 from datetime import date, datetime, timedelta
 
+# eviter que le calcul recommence a chaque connection ou chargement de la page
+@st.cache
+
 warnings.filterwarnings("ignore", category=DeprecationWarning)
 
 # TODO : Remplacer les valeurs suivantes
