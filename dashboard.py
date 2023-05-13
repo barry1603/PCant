@@ -141,7 +141,6 @@ def get_current_menu(week_number):
 			row = menus[str_date][st.session_state["skips"][str_date]]
 			
 		# Si le plat a déjà été proposé au cours des x derniers jours, on en choisit un autre
-		@st.cache
 		def dish_found():
 			found = False
 			previous_dates = sorted([
@@ -158,7 +157,6 @@ def get_current_menu(week_number):
 					found = True
 					break
 			return found
-		@st.cache
 		def menu_found():
 			found = False
 			previous_dates = sorted([
