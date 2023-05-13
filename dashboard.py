@@ -9,7 +9,6 @@ import warnings
 
 from datetime import date, datetime, timedelta
 
-
 warnings.filterwarnings("ignore", category=DeprecationWarning)
 
 # TODO : Remplacer les valeurs suivantes
@@ -103,9 +102,7 @@ current_week = int(st.selectbox(
 # en prenant en compte les règles métiers
 sorted_results = st.session_state["Repas semaine"].sort_values("Taux de gaspillage", ascending=True)
 
-# eviter que le calcul recommence a chaque connection ou chargement de la page
 @st.cache
-
 def calcul_menus():
 	# Cette fonction va calculer tous les menus des prochaines semaines en appliquant les règles métiers
 	menus = {}
@@ -128,9 +125,7 @@ menus = calcul_menus()
 if "skips" not in st.session_state:
 	st.session_state["skips"] = {}
 
-# eviter que le calcul recommence a chaque connection ou chargement de la page
 @st.cache
-
 def get_current_menu(week_number):
 	week_menus = []
 	price = 0 # Coût total de la semaine pour un enfant

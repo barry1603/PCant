@@ -1,18 +1,17 @@
-# Utilisez une image de base Python
-FROM python:3.8
+# Utilisez une image de base avec Python
+FROM python:3.9
 
-# Créez un répertoire pour l'application
+# Définit le répertoire de travail dans le conteneur
 WORKDIR /app
 
-# Copiez les fichiers requirements.txt et installez les dépendances
-COPY requirements.txt .
+# Copie les fichiers du projet dans le conteneur
+COPY . /app
+
+# Installe les dépendances du projet
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Copiez le reste du code de l'application dans le répertoire /app
-COPY . .
+# Expose le port sur lequel Streamlit écoute
+EXPOSE 8080
 
-# Utilisez le port 8080 pour Streamlit
-ENV PORT 8080
-
-# Démarrez l'application Streamlit en utilisant le port 8080
-CMD streamlit run --server.port $PORT mon_dashboard.py
+# Définit la commande à exécuter lorsque le conteneur démarre
+CMD ["streamlit", "run", "--server.port", "8501", "app.py"]
