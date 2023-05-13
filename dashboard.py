@@ -102,7 +102,7 @@ current_week = int(st.selectbox(
 # en prenant en compte les règles métiers
 sorted_results = st.session_state["Repas semaine"].sort_values("Taux de gaspillage", ascending=True)
 
-@st.cache
+@st.cache_data
 def calcul_menus():
 	# Cette fonction va calculer tous les menus des prochaines semaines en appliquant les règles métiers
 	menus = {}
@@ -125,7 +125,7 @@ menus = calcul_menus()
 if "skips" not in st.session_state:
 	st.session_state["skips"] = {}
 
-@st.cache
+@st.cache_data
 def get_current_menu(week_number):
 	week_menus = []
 	price = 0 # Coût total de la semaine pour un enfant
