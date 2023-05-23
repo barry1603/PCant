@@ -109,7 +109,7 @@ def calcul_menus():
 	for week in range(NUM_WEEKS):
 		for i in range(5):
 			delta_i = i + week * 5
-			current_date = datetime(2023, 5, 29) + timedelta(days=delta_i + (2 * np.floor(delta_i / 5)))
+			current_date = datetime(2023, 6, 6) + timedelta(days=delta_i + (2 * np.floor(delta_i / 5)))
 			str_date = current_date.strftime("%d-%m-%Y")
 			menus[str_date] = sorted_results[sorted_results["Date"] == current_date].iloc[:50, :].to_dict("records")
 	return menus
