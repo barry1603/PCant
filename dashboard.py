@@ -156,7 +156,6 @@ def get_current_menu(week_number):
 					break
 			return found
 
-		@st.cache_data
 		def menu_found():
 			found = False
 			previous_dates = sorted([
