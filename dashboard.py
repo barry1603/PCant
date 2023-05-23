@@ -102,7 +102,7 @@ current_week = int(st.selectbox(
 # en prenant en compte les règles métiers
 sorted_results = st.session_state["Repas semaine"].sort_values("Taux de gaspillage", ascending=True)
 
-
+@st.cache_data
 def calcul_menus():
 	# Cette fonction va calculer tous les menus des prochaines semaines en appliquant les règles métiers
 	menus = {}
@@ -125,7 +125,7 @@ menus = calcul_menus()
 if "skips" not in st.session_state:
 	st.session_state["skips"] = {}
 
-
+@st.cache_data
 def get_current_menu(week_number):
 	week_menus = []
 	price = 0 # Coût total de la semaine pour un enfant
@@ -141,6 +141,7 @@ def get_current_menu(week_number):
 			row = menus[str_date][st.session_state["skips"][str_date]]
 
 		# Si le plat a déjà été proposé au cours des x derniers jours, on en choisit un autre
+		@st.cache_data
 		def dish_found():
 			found = False
 			previous_dates = sorted([
@@ -158,7 +159,7 @@ def get_current_menu(week_number):
 					break
 			return found
 
-
+		@st.cache_data
 		def menu_found():
 			found = False
 			previous_dates = sorted([
@@ -191,10 +192,10 @@ def get_current_menu(week_number):
 			for comp in composants:
 				# TODO : Calculer les informations de coût et de CO2 pour chaque entité
 				# ...
-				if comp in co2_couts["Nom"].values:
-					myrow = co2_couts.loc[co2_couts["Nom"] == comp]
-					co2 += myrow["Kg_co2"] * myrow["Prix Unitaire Kg"]
-					price += myrow["Portion"] * ((myrow["Prix Unitaire Kg"] * 100) / 1000)
+				if comp in co2_couts["Nom"]:
+					co2 = co2_couts["Kg_co2"] * co2_couts["Prix Unitaire Kg"]
+					price = co2_couts["Portion"] * ((co2["Prix Unitaire Kg"] * 100) / 1000)
+
 
 	return week_menus, price, co2
 
