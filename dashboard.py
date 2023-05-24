@@ -116,7 +116,7 @@ def calcul_menus():
 
 col1, col2, col3 = st.columns(3)
 
-co2_couts = pd.read_csv("data/co2_couts.csv")
+co2_couts = pd.read_csv("./data/co2_couts.csv")
 co2_couts["Nom"] = co2_couts["Nom"].str.lower()
 co2_couts["Nom"] = co2_couts["Nom"].str.replace(r"(^\s+|\s+$)", "")  # On supprime les espaces au début et à la fin
 co2_couts["Nom"] = co2_couts["Nom"].str.replace(r"s$", "")  # On supprime le pluriel
