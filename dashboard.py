@@ -125,7 +125,7 @@ menus = calcul_menus()
 if "skips" not in st.session_state:
 	st.session_state["skips"] = {}
 
-@st.cache_data
+
 def get_current_menu(week_number):
 	week_menus = []
 	price = 0 # Coût total de la semaine pour un enfant
@@ -141,7 +141,6 @@ def get_current_menu(week_number):
 			row = menus[str_date][st.session_state["skips"][str_date]]
 
 		# Si le plat a déjà été proposé au cours des x derniers jours, on en choisit un autre
-		@st.cache_data
 		def dish_found():
 			found = False
 			previous_dates = sorted([
@@ -159,7 +158,6 @@ def get_current_menu(week_number):
 					break
 			return found
 
-		@st.cache_data
 		def menu_found():
 			found = False
 			previous_dates = sorted([
@@ -195,8 +193,6 @@ def get_current_menu(week_number):
 				if comp in co2_couts["Nom"]:
 					co2 = co2_couts["Kg_co2"] * co2_couts["Prix Unitaire Kg"]
 					price = co2_couts["Portion"] * ((co2["Prix Unitaire Kg"] * 100) / 1000)
-
-
 	return week_menus, price, co2
 
 
@@ -249,6 +245,13 @@ with col2:
 	cols2_1_metrics = col2.columns(3)
 	# TODO : Afficher les métriques de budget (coût de semaine, coût total, économies réalisées)
 	# ...
+	week_cost = prix_semaine * num_students
+	total_cost = week_cost * len(week_menus)
+	savings = total_cost - sum(participations) if show_percent else 0
+
+	cols2_1_metrics[0].write(f"Coût de la semaine : {week_cost} €")
+	cols2_1_metrics[1].write(f"Coût total : {total_cost} €")
+	cols2_1_metrics[2].write(f"Économies réalisées : {savings} €" if savings > 0 else "Pas d'économies réalisées")
 
 
 	col2.write("### Affluence")
@@ -273,6 +276,14 @@ with col3:
 	cols3_1_metrics = col3.columns(3)
 	# TODO : Afficher les métriques de gaspillage
 	# ...
+	total_gaspillage_initial = sum(gaspillage_initial)
+	total_gaspillage_prevu = sum(gaspillage_prevu)
+
+	cols3_1_metrics[0].write(f"Gaspillage initial : {total_gaspillage_initial}%")
+	cols3_1_metrics[1].write(f"Gaspillage prévu : {total_gaspillage_prevu}%")
+
+	co2_emissions = co2 * len(week_menus)
+	cols3_1_metrics[2].write(f"Émissions de CO2 : {co2_emissions} kg")
 
 	col3.write("### Produits Bio de la semaine")
 	have_bio = False
